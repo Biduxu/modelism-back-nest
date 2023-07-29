@@ -1,7 +1,7 @@
 /* eslint-disable prettier/prettier */
 import { Controller } from '@nestjs/common';
 import { UsersService } from './users.service';
-import { Get, Post, Body } from '@nestjs/common/decorators';
+import { Get, Post, Body, Param } from '@nestjs/common/decorators';
 import { CreateUserDto } from './dto/create-user.dto';
 
 @Controller('users')
@@ -16,5 +16,10 @@ export class UsersController {
   @Get()
   findAll(){
     return this.usersService.findAll()
+  }
+
+  @Get(':id')
+  findOne(@Param('id') id :string){
+    return this.usersService.findOne(id)
   }
 }
