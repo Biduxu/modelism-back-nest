@@ -1,4 +1,6 @@
 /* eslint-disable prettier/prettier */
+import { hashSync } from 'bcryptjs';
+import { Transform } from 'class-transformer';
 import { IsString, IsNotEmpty, MinLength, MaxLength, IsOptional } from 'class-validator';
 
 export class CreateUserDto {
@@ -18,6 +20,9 @@ export class CreateUserDto {
     @IsNotEmpty()
     @MinLength(3)
     @MaxLength(120)
+    @Transform(({ value }: { value: string }) => hashSync(value, 10), {
+        groups: ["transform"]
+    })
     password: string
 
     @IsString()
