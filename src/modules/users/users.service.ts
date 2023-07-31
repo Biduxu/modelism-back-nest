@@ -3,6 +3,9 @@ import { Injectable, NotFoundException, ConflictException } from '@nestjs/common
 import { UsersRepository } from './repositories/users.repository';
 import { CreateUserDto } from './dto/create-user.dto';
 import { User } from './entities/user.entity';
+import { UpdateUserDto } from './dto/update-user.dto';
+import { UpdatePasswordUserDto } from './dto/update-password-user.dto';
+import { compare, hashSync } from 'bcryptjs';
 
 @Injectable()
 export class UsersService {
@@ -39,5 +42,65 @@ export class UsersService {
         }
 
         return user
+    }
+
+    async update(id: string, data: UpdateUserDto) {
+        const user: User | null = await this.usersRepository.findOne(id)
+
+        if(!user){
+            throw new NotFoundException('User not found!')
+        }
+
+        if(data.username){
+            const userByUsername: User | null = await this.usersRepository.findByUsername(data.username)
+
+            if(userByUsername){
+                throw new ConflictException("Username already exists!")
+            }
+        }
+
+        if(data.email){
+            const userByEmail: User | null = await this.usersRepository.findByEmail(data.email)
+
+            if(userByEmail){
+                throw new ConflictException("Email already exists!")
+            }
+        }
+
+        const updateUser = await this.usersRepository.update(id, data)
+
+        return updateUser
+    }
+
+    async remove(id: string) {
+        const user: User | null = await this.usersRepository.findOne(id)
+
+        if(!user){
+            throw new NotFoundException('User not found!')
+        }
+
+        await this.usersRepository.delete(id)
+    }
+
+    async updatePassword(id: string, data: UpdatePasswordUserDto) {
+        const user: User | null = await this.usersRepository.findOne(id)
+
+        if(!user){
+            throw new NotFoundException('User not found!')
+        }
+        console.log(user.password)
+        const passwordMatch: boolean = await compare(data.currentPassword, user.password)
+        console.log(passwordMatch)
+        if(!passwordMatch){
+            throw new NotFoundException('Current password not match!')
+        }
+
+        const newPassword: string = hashSync(data.newPassword, 10)
+
+        const updateUser = await this.usersRepository.updatePassword(id, {
+            password: newPassword
+        })
+
+        return updateUser
     }
 }

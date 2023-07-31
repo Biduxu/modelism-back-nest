@@ -4,6 +4,7 @@ import { UsersRepository } from '../users.repository';
 import { User } from '../../entities/user.entity';
 import { CreateUserDto } from '../../dto/create-user.dto';
 import { plainToInstance } from 'class-transformer';
+import { UpdateUserDto } from '../../dto/update-user.dto';
 
 @Injectable()
 export class UsersInMemoryRepository implements UsersRepository {
@@ -33,7 +34,7 @@ export class UsersInMemoryRepository implements UsersRepository {
             return userFound.id === id
         })
 
-        return plainToInstance(User, this.database[userIndex])
+        return this.database[userIndex]
     }
 
     findByUsername(username: string): User | Promise<User> {
@@ -50,5 +51,41 @@ export class UsersInMemoryRepository implements UsersRepository {
         })
 
         return this.database[userIndex]
+    }
+
+    update(id: string, data: UpdateUserDto): User | Promise<User> {
+        const userIndex: number = this.database.findIndex((userFound) => {
+            return userFound.id === id
+        })
+
+        Object.assign(this.database[userIndex], {
+            ...this.database[userIndex],
+            ...data
+        })
+
+        return plainToInstance(User, this.database[userIndex])
+    }
+
+    delete(id: string): void | Promise<void> {
+        const userIndex: number = this.database.findIndex((userFound) => {
+            return userFound.id === id
+        })
+
+        this.database.splice(userIndex, 1)
+
+        return 
+    }
+
+    updatePassword(id: string, data: UpdateUserDto): string | Promise<string> {
+        const userIndex: number = this.database.findIndex((userFound) => {
+            return userFound.id === id
+        })
+
+        Object.assign(this.database[userIndex], {
+            ...this.database[userIndex],
+            ...data
+        })
+
+        return "Success. Password changed!"
     }
 }
