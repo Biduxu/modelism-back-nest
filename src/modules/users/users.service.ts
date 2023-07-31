@@ -88,9 +88,9 @@ export class UsersService {
         if(!user){
             throw new NotFoundException('User not found!')
         }
-        console.log(user.password)
+        
         const passwordMatch: boolean = await compare(data.currentPassword, user.password)
-        console.log(passwordMatch)
+        
         if(!passwordMatch){
             throw new NotFoundException('Current password not match!')
         }
@@ -102,5 +102,17 @@ export class UsersService {
         })
 
         return updateUser
+    }
+
+    async findByUsername(username: string){
+        const user = await this.usersRepository.findByUsername(username)
+
+        return user
+    }
+
+    async findByEmail(email: string){
+        const user = await this.usersRepository.findByEmail(email)
+
+        return user
     }
 }
