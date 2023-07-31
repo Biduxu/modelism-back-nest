@@ -47,7 +47,18 @@ export class AuthService {
         }
     }
 
-    async login(email?: string, username?: string){
+    async login(emailOrUsername: string){
+        let email
+        let username
+
+        if(emailOrUsername.includes("@")){
+            email = emailOrUsername
+            username = null
+        }else{
+            email = null
+            username = emailOrUsername
+        }
+
         if(email){
             const user = await this.usersService.findByEmail(email)
             
@@ -59,8 +70,9 @@ export class AuthService {
         if(username){
             const user = await this.usersService.findByUsername(username)
             
+            const email: string = user.email
             return {
-                token: this.jwtService.sign({ username }, { subject: user.id })
+                token: this.jwtService.sign({ email }, { subject: user.id })
             }
         }
     }

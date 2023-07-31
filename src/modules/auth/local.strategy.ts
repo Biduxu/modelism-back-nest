@@ -8,22 +8,22 @@ import { AuthService } from './auth.service';
 export class LocalStrategy extends PassportStrategy(Strategy){
     constructor(private authService: AuthService){
         super({
-            usernameField: "email" || "username",
+            usernameField: "emailOrUsername",
             passwordField: "password"
         })
     }
 
-    async validate(email: string, password:string){
+    async validate(emailOrUsername: string, password:string){
         let data 
 
-        if(email.includes("@")){
+        if(emailOrUsername.includes("@")){
             data = {
-                email: email,
+                email: emailOrUsername,
                 password: password
             }
         }else{
             data = {
-                username: email,
+                username: emailOrUsername,
                 password: password
             }
         }
@@ -31,7 +31,7 @@ export class LocalStrategy extends PassportStrategy(Strategy){
         const user = await this.authService.validateUser(data)
 
         if(!user){
-            throw new UnauthorizedException("Invalid email or password!")
+            throw new UnauthorizedException("Invalid credentials!")
         }
 
         return user
