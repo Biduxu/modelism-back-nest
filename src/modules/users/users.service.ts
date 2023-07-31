@@ -1,5 +1,5 @@
 /* eslint-disable prettier/prettier */
-import { Injectable, NotFoundException, ConflictException } from '@nestjs/common';
+import { Injectable, NotFoundException, ConflictException, UnauthorizedException } from '@nestjs/common';
 import { UsersRepository } from './repositories/users.repository';
 import { CreateUserDto } from './dto/create-user.dto';
 import { User } from './entities/user.entity';
@@ -10,6 +10,12 @@ import { compare, hashSync } from 'bcryptjs';
 @Injectable()
 export class UsersService {
     constructor(private usersRepository: UsersRepository){}
+
+    private verifyOwner = (id: string, idRequest: string) => {
+        if(id !== idRequest){
+          throw new UnauthorizedException('You do not have permission')
+        }
+      }
 
     async create(data: CreateUserDto) {
 
@@ -34,7 +40,9 @@ export class UsersService {
         return users
     }
 
-    async findOne(id: string) {
+    async findOne(id: string, idRequest: string) {
+        this.verifyOwner(id, idRequest)
+
         const user: User | null = await this.usersRepository.findOne(id)
 
         if(!user){
@@ -44,7 +52,9 @@ export class UsersService {
         return user
     }
 
-    async update(id: string, data: UpdateUserDto) {
+    async update(id: string, data: UpdateUserDto, idRequest: string) {
+        this.verifyOwner(id, idRequest)
+
         const user: User | null = await this.usersRepository.findOne(id)
 
         if(!user){
@@ -72,7 +82,9 @@ export class UsersService {
         return updateUser
     }
 
-    async remove(id: string) {
+    async remove(id: string, idRequest: string) {
+        this.verifyOwner(id, idRequest)
+
         const user: User | null = await this.usersRepository.findOne(id)
 
         if(!user){
@@ -82,7 +94,9 @@ export class UsersService {
         await this.usersRepository.delete(id)
     }
 
-    async updatePassword(id: string, data: UpdatePasswordUserDto) {
+    async updatePassword(id: string, data: UpdatePasswordUserDto, idRequest: string) {
+        this.verifyOwner(id, idRequest)
+
         const user: User | null = await this.usersRepository.findOne(id)
 
         if(!user){
