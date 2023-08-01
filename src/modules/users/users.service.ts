@@ -43,7 +43,7 @@ export class UsersService {
     async findOne(id: string, idRequest: string) {
         this.verifyOwner(id, idRequest)
 
-        const user: User | null = await this.usersRepository.findOne(id)
+        const user: User | null = await this.usersRepository.findOne(id, false)
 
         if(!user){
             throw new NotFoundException('User not found!')
@@ -55,7 +55,7 @@ export class UsersService {
     async update(id: string, data: UpdateUserDto, idRequest: string) {
         this.verifyOwner(id, idRequest)
 
-        const user: User | null = await this.usersRepository.findOne(id)
+        const user: User | null = await this.usersRepository.findOne(id, false)
 
         if(!user){
             throw new NotFoundException('User not found!')
@@ -85,7 +85,7 @@ export class UsersService {
     async remove(id: string, idRequest: string) {
         this.verifyOwner(id, idRequest)
 
-        const user: User | null = await this.usersRepository.findOne(id)
+        const user: User | null = await this.usersRepository.findOne(id, false)
 
         if(!user){
             throw new NotFoundException('User not found!')
@@ -97,7 +97,7 @@ export class UsersService {
     async updatePassword(id: string, data: UpdatePasswordUserDto, idRequest: string) {
         this.verifyOwner(id, idRequest)
 
-        const user: User | null = await this.usersRepository.findOne(id)
+        const user: User | null = await this.usersRepository.findOne(id, true)
 
         if(!user){
             throw new NotFoundException('User not found!')

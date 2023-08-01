@@ -29,12 +29,15 @@ export class UsersInMemoryRepository implements UsersRepository {
         return plainToInstance(User, this.database)
     }
 
-    findOne(id: string): User | Promise<User> {
+    findOne(id: string, showPassword: boolean): User | Promise<User> {
         const userIndex: number = this.database.findIndex((userFound) => {
             return userFound.id === id
         })
-
-        return this.database[userIndex]
+        if(showPassword){
+            return this.database[userIndex]
+        }else{
+            return plainToInstance(User, this.database[userIndex])
+        }
     }
 
     findByUsername(username: string): User | Promise<User> {
