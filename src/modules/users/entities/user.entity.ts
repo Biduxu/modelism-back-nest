@@ -1,7 +1,7 @@
 /* eslint-disable prettier/prettier */
 import { Exclude } from 'class-transformer';
 import { randomUUID } from 'crypto';
-import { DateNow } from '../hooks/dateNow';
+import { DateNow } from '../utils/dateNow';
 
 export class User {
     readonly id: string
