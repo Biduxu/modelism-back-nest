@@ -33,7 +33,7 @@ export class CreateTrainDto {
     railroad: string
 
     @IsString()
-    @IsNotEmpty()
+    @IsOptional()
     @MinLength(3)
     @MaxLength(50)
     number: string | null
