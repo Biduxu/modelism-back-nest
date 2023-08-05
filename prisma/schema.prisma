@@ -19,6 +19,24 @@ model User {
   birthdate String 
   createdAt String
   imageProfile String?
+  trains Train[]
 
   @@map("users")
+}
+
+model Train {
+  id String @id
+  manufacturer String 
+  reference String
+  description String
+  model String
+  railroad String
+  number String?
+  coverImage String?
+  isActive Boolean
+  createdAt String
+  user User @relation(fields: [userId], references: [id])
+  userId String
+
+  @@map("trains")
 }
