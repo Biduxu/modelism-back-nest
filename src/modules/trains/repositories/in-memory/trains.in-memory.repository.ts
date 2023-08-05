@@ -41,7 +41,7 @@ export class TrainsInMemoryRepository implements TrainsRepository {
         return this.database[trainIndex]
     }
 
-    async update(data: UpdateTrainDto, trainId: string, userId: string): Promise<Train> {
+    async update(data: UpdateTrainDto, trainId: string): Promise<Train> {
         const trainIndex = this.database.findIndex((train) => {
             return train.id === trainId
         })
@@ -55,7 +55,7 @@ export class TrainsInMemoryRepository implements TrainsRepository {
 
     }
 
-    async delete(trainId: string, userId: string): Promise<void> {
+    async delete(trainId: string): Promise<void> {
         const trainIndex = this.database.findIndex((train) => {
             return train.id === trainId
         })

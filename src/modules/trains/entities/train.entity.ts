@@ -9,8 +9,8 @@ export class Train {
     description: string
     model: string
     railroad: string
-    number: string
-    coverImage: string
+    number: string | null
+    coverImage: string | null
     isActive: boolean 
     readonly createdAt: string
     userId: string
