@@ -42,7 +42,7 @@ export class TrainsService {
             throw new UnauthorizedException("You do not have permission!")
         }
 
-        const updateTrain = await this.trainsRepository.update(data, trainId, userId)
+        const updateTrain = await this.trainsRepository.update(data, trainId)
 
         return updateTrain
     }
@@ -58,6 +58,6 @@ export class TrainsService {
             throw new UnauthorizedException("You do not have permission!")
         }
 
-        await this.trainsRepository.delete(trainId, userId)
+        await this.trainsRepository.delete(trainId)
     }
 }
