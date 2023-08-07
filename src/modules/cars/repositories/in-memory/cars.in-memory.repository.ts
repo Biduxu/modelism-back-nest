@@ -3,6 +3,8 @@ import { Injectable } from '@nestjs/common';
 import { CarsRepository } from '../cars.repository';
 import { CreateCarDto } from '../../dto/create-car.dto';
 import { Car } from '../../entities/car.entity';
+import { UpdateCarDto } from '../../dto/update-car.dto';
+import { DateNow } from 'src/modules/users/utils/dateNow';
 
 @Injectable()
 export class CarsInMemoryRepository implements CarsRepository {
@@ -38,5 +40,47 @@ export class CarsInMemoryRepository implements CarsRepository {
         })
 
         return this.database[carIndex]
+    }
+
+    async update(data: UpdateCarDto, carId: string): Promise<Car> {
+        const carIndex: number = this.database.findIndex((car) => {
+            return car.id === carId
+        })
+
+        Object.assign(this.database[carIndex], {
+            ...this.database[carIndex],
+            ...data
+        })
+
+        return this.database[carIndex]
+    }
+
+    async cleanCar(carId: string): Promise<Car> {
+        const carIndex: number = this.database.findIndex((car) => {
+            return car.id === carId
+        })
+
+        const dateNow: DateNow = new DateNow()
+
+        const dataLastClean = {
+            lastClean: dateNow.getDate()
+        }
+
+        Object.assign(this.database[carIndex], {
+            ...this.database[carIndex],
+            ...dataLastClean
+        })
+
+        return this.database[carIndex]
+    }
+
+    async delete(carId: string): Promise<void> {
+        const carIndex: number = this.database.findIndex((car) => {
+            car.id === carId
+        })
+
+        this.database.splice(carIndex, 1)
+
+        return 
     }
 }
