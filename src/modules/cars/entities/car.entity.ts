@@ -10,6 +10,7 @@ export class Car {
     color: string
     price: string
     lastClean: string | null
+    coverImage: string | null
     readonly createdAt: string
     userId: string
 
