@@ -37,4 +37,10 @@ export class CreateCarDto {
     @MinLength(3)
     @MaxLength(120)
     lastClean: string | null
+
+    @IsString()
+    @IsOptional()
+    @MinLength(3)
+    @MaxLength(120)
+    coverImage: string | null
 }
