@@ -21,10 +21,11 @@ Rode a aplicação: npm run start:dev
 | ------ | -------------------------- | ------------------------------------------------- | -------------------------------------- |
 | POST   | /users                     | Criação de usuário                                | Qualquer usuário, não necessita token  |
 | GET    | /users                     | Lista todos os usuário                            | Qualquer usuário, não necessita token  |
-| GET    | /users/:id                 | Lista o usuário passando o id                     | Qualquer usuário, necessita de token   |
-| PATCH  | /users/:id                 | Atualiza um usuário                               | Usuário dono, necessita de token       |
-| PATCH  | /users/:id/password        | Atualiza a senha de um usuário                    | Usuário dono, necessita de token       |
-| DELETE | /users/:id                 | Realiza um delete no usuário                      | Usuário dono, necessita de token       |
+| GET    | /users/findById/:id        | Lista o usuário passando o id                     | Qualquer usuário, necessita de token   |
+| GET    | /users/findByToken         | Lista o usuário passado pelo token                | Qualquer usuário, necessita de token   |
+| PATCH  | /users/findById/:id        | Atualiza um usuário                               | Usuário dono, necessita de token       |
+| PATCH  | /users/findById/:id/password| Atualiza a senha de um usuário                   | Usuário dono, necessita de token       |
+| DELETE | /users/findById/:id        | Realiza um delete no usuário                      | Usuário dono, necessita de token       |
 | POST   | /login                     | Gera o token de autenticação                      | Qualquer usuário, não necessita token  |
 | POST   | /trains                    | Criação de um trem                                | Qualquer usuário, necessita de token   |
 | GET    | /trains                    | Lista todos os trens do usuário logado            | Qualquer usuário, necessita de token   |
