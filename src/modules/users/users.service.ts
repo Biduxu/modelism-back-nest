@@ -42,7 +42,7 @@ export class UsersService {
 
     async findOne(id: string, idRequest: string) {
         this.verifyOwner(id, idRequest)
-
+        
         const user: User | null = await this.usersRepository.findOne(id, false)
 
         if(!user){

@@ -21,26 +21,32 @@ export class UsersController {
     return this.usersService.findAll()
   }
 
-  @Get(':id')
+  @Get('findById/:id')
   @UseGuards(JwtAuthGuard)
   findOne(@Param('id') id :string, @Request() req: any){
     return this.usersService.findOne(id, req.user.id)
   }
 
-  @Patch(':id')
+  @Get('findByToken')
+  @UseGuards(JwtAuthGuard)
+  findYourProfile(@Request() req: any){
+    return this.usersService.findOne(req.user.id, req.user.id)
+  }
+
+  @Patch('findById/:id')
   @UseGuards(JwtAuthGuard)
   update(@Param('id') id: string, @Body() data: UpdateUserDto, @Request() req: any) {
     return this.usersService.update(id, data, req.user.id)
   }
 
-  @Delete(':id')
+  @Delete('findById/:id')
   @UseGuards(JwtAuthGuard)
   @HttpCode(204)
   remove(@Param('id') id: string, @Request() req: any) {
     return this.usersService.remove(id, req.user.id)
   }
 
-  @Patch(':id/password')
+  @Patch('findById/:id/password')
   @UseGuards(JwtAuthGuard)
   updatePassword(@Param('id') id: string, @Body() data: UpdatePasswordUserDto, @Request() req: any) {
     return this.usersService.updatePassword(id, data, req.user.id)
